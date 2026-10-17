@@ -3,7 +3,7 @@
 // Yangi versiya chiqqanda CACHE nomini o'zgartirish shart emas: index.html har doim avval tarmoqdan olinadi,
 // assets/* fayllar nomida xesh bor (yangi build = yangi fayl nomi).
 // Ilova istalgan yo'lda ishlaydi ("/" yoki "/crm/"): barcha yo'llar service worker joylashgan papkaga nisbatan.
-const CACHE = "kashkar-crm-v3";
+const CACHE = "kashkar-crm-v4";
 const BASE = new URL("./", self.location.href).pathname; // masalan "/crm/"
 const SHELL = ["", "index.html", "offline.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"].map((p) => BASE + p);
 const INDEX = BASE + "index.html";
@@ -27,8 +27,9 @@ self.addEventListener("fetch", (e) => {
   if (req.mode === "navigate") {
     // Avval tarmoq; muvaffaqiyatli javob keshdagi index.html'ni yangilaydi (eskirgan qobiq qolmasin).
     // GitHub Pages ichki yo'llarga (masalan /crm/kassa) 404.html = ilova bilan javob beradi — u ham ilova.
+    // cache: "no-cache" — brauzerning HTTP keshidagi eski index.html (GitHub Pages 10 daqiqa keshlaydi) ishlatilmasin
     e.respondWith(
-      fetch(req)
+      fetch(req.url, { cache: "no-cache", credentials: "same-origin" })
         .then((res) => {
           if (res.ok) {
             const copy = res.clone();
