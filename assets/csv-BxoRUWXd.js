@@ -1,0 +1,2 @@
+function r(e){let t=e==null?"":String(e);return/^[=+\-@\t\r]/.test(t)&&(t=`'${t}`),/[",\n\r;]/.test(t)?`"${t.replace(/"/g,'""')}"`:t}function l(e){return"\uFEFF"+e.map(t=>t.map(r).join(",")).join(`\r
+`)}function s(e,t){const c=new Blob([l(t)],{type:"text/csv;charset=utf-8"}),o=URL.createObjectURL(c),n=document.createElement("a");n.href=o,n.download=e,n.click(),setTimeout(()=>URL.revokeObjectURL(o),1e3)}export{s as d};
